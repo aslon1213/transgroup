@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     "web_contents.apps.WebContentsConfig",
         'rest_framework',
         "api.apps.ApiConfig",
+          'rest_framework_swagger',
+              'drf_yasg',  # <-- Here
+
 
 ]
 REST_FRAMEWORK = {
@@ -49,7 +52,10 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny',
     ],
+        'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'  # <-- Here
+
 }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

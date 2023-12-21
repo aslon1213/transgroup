@@ -4,10 +4,12 @@ from django.contrib.auth.models import Group, User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 # Create your views here.
-from .serializers import GroupSerializer, UserSerializer, ConstructionSerializer
-from constructions.models import Location_Attirbutes, Construction
+from .serializers import GroupSerializer, UserSerializer, ConstructionSerializer, SubwayStationSerializer, ConstructionThreeDImageSerializer
+from constructions.models import Location_Attirbutes, Construction, SubwayStation, ConstructionThreeDImage
+from web_contents.models import Comment, ContentItem
 # import .serializers import ConstructionSerializer
-
+import json
+@api_view(["GET"])
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -16,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
+@api_view(["GET"])
 class GroupViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
@@ -32,16 +34,50 @@ def GetIndex(request):
 
 @api_view(["GET"])
 def GetAllStationsOnMap(request):
-    return Response(Location_Attirbutes)
+    all_stations = SubwayStationSerializer(SubwayStation.objects.all(), many=True).data
+
+    return Response(all_stations)
 
 
 @api_view(["GET"])
 def GetAllConstructionsOnStation(request, station_name):
-    objects = Construction.objects.filter(Location=station_name).all()
+
+
+    station = SubwayStation.objects.filter(name=station_name).first()
+
+    objects = Construction.objects.filter(subway_station_location = station).all()
     
     serialized_objects = ConstructionSerializer(objects, many=True)
-    return Response(serialized_objects.data)
+    data = serialized_objects.data
+    # for d in data:
+    #     d["subway_station_location"] = station.__dict__
+    print(data)
+    return Response(data)
+
+
+@api_view(["GET"])
+def GetConstructionThreeDImageByID(request, id):
+    image = ConstructionThreeDImage.objects.filter(id=id).first()
+    data = ConstructionThreeDImageSerializer(image).data
+    return Response(data)
+@api_view(["GET"])
+def GetConstructionByID(request, id):
+    construction = Construction.objects.filter(id=id).first()
+    data = ConstructionSerializer(construction).data
+    return Response(data)
+
+
+@api_view(["GET"])
+def GetThreeDImageByID(request, id):
+    image = ConstructionThreeDImage.objects.filter(id=id).first()
+    data = ConstructionThreeDImageSerializer(image).data
+    return Response(data)
 
 
 
-    
+
+@api_view(["GET"])
+def GetAllComments(request, id):
+    comments = Comment.objects.filter(user_id=id).all()
+    data = CommentSerializer(comments, many=True).data
+    return Response(data)

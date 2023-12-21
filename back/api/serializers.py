@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
-from constructions.models import Construction, ConstructionThreeDImage, Order
+from constructions.models import Construction, ConstructionThreeDImage, Order, SubwayStation
+from web_contents.models import Comment, ContentItem
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
@@ -12,17 +13,31 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ['url', 'name']
 
-
-
-class ConstructionSerializer(serializers.ModelSerializer):
+class SubwayStationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Construction
+        model = SubwayStation
         fields = "__all__"
+
 
 
 
 class ConstructionThreeDImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConstructionThreeDImage
-        fields = ["image", "construction", "neighbours"]
+        fields = "__all__"
+
+
+class ConstructionSerializer(serializers.ModelSerializer):
+    subway_station_location = SubwayStationSerializer()
+    threedimage = ConstructionThreeDImageSerializer()
+    class Meta:
+        model = Construction
+        fields = "__all__"
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+
 

@@ -14,5 +14,23 @@ class ContentItem(models.Model):
 
 
 
+platforms = (
+    ("Telegram", "Telegram"),
+    ("Facebook", "Facebook"),
+    ("Instagram", "Instagram"),
+)
+
+
+class Comment(models.Model):
+    text = models.TextField()
+    person= models.CharField(max_length=100)
+    person_image = models.ImageField(upload_to='uploads/web_contents/person_images/')
+    on_what_platform = models.CharField(max_length=100, choices=platforms, default="Telegram", blank=True, null=True)
+
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
 
 
