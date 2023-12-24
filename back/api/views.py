@@ -4,9 +4,9 @@ from django.contrib.auth.models import Group, User
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 # Create your views here.
-from .serializers import GroupSerializer, UserSerializer, ConstructionSerializer, SubwayStationSerializer, ConstructionThreeDImageSerializer
+from .serializers import GroupSerializer, UserSerializer, ConstructionSerializer, SubwayStationSerializer, ConstructionThreeDImageSerializer, CommentSerializer
 from constructions.models import Location_Attirbutes, Construction, SubwayStation, ConstructionThreeDImage
-from web_contents.models import Comment, ContentItem
+from web_contents.models import Comment, ContentItem, EmailToBeContacted
 # import .serializers import ConstructionSerializer
 import json
 @api_view(["GET"])
@@ -78,6 +78,22 @@ def GetThreeDImageByID(request, id):
 
 @api_view(["GET"])
 def GetAllComments(request, id):
-    comments = Comment.objects.filter(user_id=id).all()
-    data = CommentSerializer(comments, many=True).data
+    try:
+        comments = Comment.objects.filter(user_id=id).all()
+        data = CommentSerializer(comments, many=True).data
+    except Exception as e:
+        return Response({"error": e.__str__()})
     return Response(data)
+
+
+
+@api_view(["POST"])
+def saveEmailToBeContacted(request):
+    email = request.data["email"]
+    
+    try:
+        email = EmailToBeContacted.objects.create(email=email)
+        email.save()
+    except Exception as e:
+        return Response({"error": e.__str__()})
+    return Response({"message": "success"})

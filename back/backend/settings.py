@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "web_contents.apps.WebContentsConfig",
         'rest_framework',
         "api.apps.ApiConfig",
-          'rest_framework_swagger',
               'drf_yasg',  # <-- Here
 
 
