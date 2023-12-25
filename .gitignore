@@ -4,3 +4,6 @@ back/Include/
 back/pyvenv.cfg
 
 
+.env
+*.env*
+/*.env*
