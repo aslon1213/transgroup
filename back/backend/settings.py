@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "constructions.apps.ConstructionsConfig",
     "web_contents.apps.WebContentsConfig",
-        'rest_framework',
-        "api.apps.ApiConfig",
-              'drf_yasg',  # <-- Here
+    'rest_framework',
+    "api.apps.ApiConfig",
+    'drf_yasg',  # <-- Here
+    "corsheaders",
+
 
 
 ]
@@ -59,6 +61,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware", # for cors all origins
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -67,7 +70,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
-
+CORS_ALLOW_ALL_ORIGINS = True # for cors all origins
+CORS_ALLOW_METHOD = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] # for cors all origins
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
