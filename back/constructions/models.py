@@ -25,7 +25,7 @@ Location_Attirbutes = {
 class Construction(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    image = models.ImageField(upload_to='constructions/images/')
+    image = models.ImageField(upload_to='images/constructions/main_images/')
     price = models.DecimalField(max_digits=10, decimal_places=2)
     is_active = models.BooleanField(default=True)
     subway_station_location = models.ForeignKey("SubwayStation", on_delete=models.CASCADE, default=None, null=True, blank=True)
@@ -54,7 +54,7 @@ class Order(models.Model):
 
 class ConstructionThreeDImage(models.Model):
     # construction = models.ForeignKey(Construction, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='construction_three_d_images/')
+    image = models.ImageField(upload_to="images/constructions/3d/")
     neighbours = models.ManyToManyField("self", blank=True, symmetrical=False)
     name = models.CharField(max_length=200,blank=True, null=True)
 

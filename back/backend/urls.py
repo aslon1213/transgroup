@@ -47,6 +47,8 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 # schema_view = get_swagger_view(" Transgroup API ")
@@ -66,3 +68,4 @@ urlpatterns = [
     path("api/v1/", include("api.urls")),
 ]
 urlpatterns += router.urls
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
